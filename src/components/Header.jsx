@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 const links = ['CONCEPT','STYLE','STYLIST','MENU','COUPON','SALON','FAQ','RESERVATION']
 export default function Header() {
   const [open,setOpen]=useState(false), [scrolled,setScrolled]=useState(false)
-  useEffect(()=>{ const fn=()=>setScrolled(scrollY>40); fn(); addEventListener('scroll',fn,{passive:true}); return()=>removeEventListener('scroll',fn)},[])
+  useEffect(()=>{ let previous=scrollY>40;setScrolled(previous);const fn=()=>{const next=scrollY>40;if(next!==previous){previous=next;setScrolled(next)}};addEventListener('scroll',fn,{passive:true});return()=>removeEventListener('scroll',fn)},[])
   const top=e=>{e.preventDefault();setOpen(false);history.replaceState(null,'',location.pathname+location.search);scrollTo({top:0,behavior:'smooth'})}
   return <header className={`header ${scrolled?'header--scrolled':''}`}>
     <a className="brand" href="#" onClick={top} aria-label="ÉCLAT ページ最上部へ">ÉCLAT<span>エクラ</span></a>
