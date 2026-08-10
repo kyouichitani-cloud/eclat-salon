@@ -1,0 +1,3 @@
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+export default function CustomCursor(){const ref=useRef(null);useEffect(()=>{if(matchMedia('(pointer: coarse)').matches)return;const el=ref.current,x=gsap.quickTo(el,'x',{duration:.35,ease:'power3'}),y=gsap.quickTo(el,'y',{duration:.35,ease:'power3'});const move=e=>{x(e.clientX);y(e.clientY);const target=e.target.closest('[data-cursor]');el.textContent=target?.dataset.cursor||'';el.classList.toggle('cursor--active',!!target)};addEventListener('mousemove',move);return()=>removeEventListener('mousemove',move)},[]);return <div className="custom-cursor" ref={ref} aria-hidden="true"/>}
