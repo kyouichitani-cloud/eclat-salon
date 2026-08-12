@@ -7,11 +7,13 @@ export default function Loading({ onComplete }) {
       return undefined
     }
 
-    const fallback = window.setTimeout(onComplete, 3000)
+    const fallback = window.setTimeout(onComplete, 3200)
     return () => window.clearTimeout(fallback)
   }, [onComplete])
 
-  return <div className="opening" role="status" aria-label="サイトを読み込んでいます">
+  return <div className="opening" role="status" aria-label="サイトを読み込んでいます" onAnimationEnd={event => {
+    if (event.target === event.currentTarget && event.animationName === 'opening-hide') onComplete()
+  }}>
     <div className="opening__panel opening__panel--top"/>
     <div className="opening__panel opening__panel--bottom"/>
     <div className="opening__content">
