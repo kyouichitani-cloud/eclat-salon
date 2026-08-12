@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { stylists } from '../data/stylists'
 import { coupons } from '../data/coupons'
+import ResponsiveImage from './ResponsiveImage'
 const menus=['Director Cut','Cut','Color','Premium Color','Cut + Color','Cut + Color + Treatment','Perm','Treatment','Head Spa']
 const times=['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00']
 const steps=['COUPON','MENU','STYLIST','DATE','TIME','CONFIRM']
@@ -10,7 +11,7 @@ const update=(k,v)=>setForm(f=>({...f,[k]:v}));const canNext=useMemo(()=>step===
 return <section className="reservation section-theme" id="reservation" data-bg="#111111"><div className="reservation__head"><p className="eyebrow">07 — ONLINE BOOKING</p><h2>RESERVATION</h2><p>これはデモ予約画面です。入力内容は送信・保存されません。</p></div><div className="step-progress">{steps.map((s,i)=><button className={i===step?'active':i<step?'done':''} onClick={()=>i<=step&&setStep(i)} key={s}><b>{String(i+1).padStart(2,'0')}</b><span>{s}</span></button>)}</div><div className="reservation-shell"><aside><p>YOUR SELECTION</p><dl><div><dt>COUPON</dt><dd>{form.coupon}</dd></div><div><dt>MENU</dt><dd>{form.menu||'未選択'}</dd></div><div><dt>STYLIST</dt><dd>{form.stylist}</dd></div><div><dt>DATE / TIME</dt><dd>{form.date||'—'} {form.time}</dd></div><div><dt>PRICE</dt><dd>{form.price}</dd></div></dl></aside><div className="reservation-stage"><div className="step" key={step}>
 {step===0&&<><StepTitle n="01" title="クーポンを選択"/><Choice choices={['クーポンなし',...coupons.map(c=>c.title+' '+c.price)]} value={form.coupon} onChange={v=>update('coupon',v)}/></>}
 {step===1&&<><StepTitle n="02" title="メニューを選択"/><Choice choices={menus} value={form.menu} onChange={v=>update('menu',v)}/></>}
-{step===2&&<><StepTitle n="03" title="担当スタイリストを選択"/><div className="stylist-choice"><button className={form.stylist==='指名なし'?'selected':''} onClick={()=>update('stylist','指名なし')}>指名なし</button>{stylists.map(s=><button className={form.stylist===s.id?'selected':''} onClick={()=>update('stylist',s.id)} key={s.id}><img src={s.image} alt=""/><span>{s.id}<small>{s.role}</small></span></button>)}</div></>}
+{step===2&&<><StepTitle n="03" title="担当スタイリストを選択"/><div className="stylist-choice"><button className={form.stylist==='指名なし'?'selected':''} onClick={()=>update('stylist','指名なし')}>指名なし</button>{stylists.map(s=><button className={form.stylist===s.id?'selected':''} onClick={()=>update('stylist',s.id)} key={s.id}><ResponsiveImage src={s.image} alt="" loading="lazy" decoding="async"/><span>{s.id}<small>{s.role}</small></span></button>)}</div></>}
 {step===3&&<><StepTitle n="04" title="希望日を選択"/><input className="date-input" type="date" min={new Date().toISOString().split('T')[0]} value={form.date} onChange={e=>update('date',e.target.value)} aria-label="希望日"/></>}
 {step===4&&<><StepTitle n="05" title="希望時間を選択"/><Choice choices={times} value={form.time} onChange={v=>update('time',v)} compact/></>}
 {step===5&&<><StepTitle n="06" title="予約内容を確認"/><div className="final-summary"><p>COUPON <b>{form.coupon}</b></p><p>MENU <b>{form.menu||'未選択'}</b></p><p>STYLIST <b>{form.stylist}</b></p><p>DATE <b>{form.date||'未選択'}</b></p><p>TIME <b>{form.time||'未選択'}</b></p><p>PRICE <b>{form.price}</b></p></div><button className="confirm" onClick={submit}>予約内容を確認する</button><p className="booking-message" role="status">{message}</p></>}
