@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { categories, hairStyles } from '../data/styles'
 
-export default function StyleGallery(){const[category,setCategory]=useState('ALL'),[selected,setSelected]=useState(null);const items=category==='ALL'?hairStyles:hairStyles.filter(s=>s.category===category)
+const mobileStyleIds = new Set([1, 3, 5, 8, 9, 11])
+
+export default function StyleGallery(){const[category,setCategory]=useState('ALL'),[selected,setSelected]=useState(null),[mobile,setMobile]=useState(()=>matchMedia('(max-width: 767px)').matches);const availableStyles=mobile?hairStyles.filter(style=>mobileStyleIds.has(style.id)):hairStyles;const items=category==='ALL'?availableStyles:availableStyles.filter(s=>s.category===category)
+useEffect(()=>{const media=matchMedia('(max-width: 767px)');const update=event=>setMobile(event.matches);media.addEventListener('change',update);return()=>media.removeEventListener('change',update)},[])
 useEffect(()=>{const fn=e=>e.key==='Escape'&&setSelected(null);addEventListener('keydown',fn);document.body.classList.toggle('modal-open',!!selected);return()=>{removeEventListener('keydown',fn);document.body.classList.remove('modal-open')}},[selected])
 return <section className="styles section-theme" id="style" data-bg="#f7f5f0"><div className="section-head"><p className="eyebrow">02 — EDITORIAL</p><h2>HAIR STYLE</h2><p>形、質感、光。あなたらしさを構成する細部まで。</p></div><div className="filters" role="group" aria-label="ヘアスタイルカテゴリー">{categories.map(c=><button className={category===c?'active':''} key={c} onClick={()=>setCategory(c)}>{c}</button>)}</div>
 <div className="style-grid">{items.map((s,i)=><button key={s.id} className={`style-tile tile-${(i%6)+1}`} onClick={()=>setSelected(s)}><img src={s.image} alt={`${s.name}のヘアスタイル`} width="900" height="1125" loading="lazy" decoding="async"/><span className="style-overlay"><small>{s.category}</small><strong>{s.name}</strong><em>VIEW STYLE ↗</em></span></button>)}</div>
