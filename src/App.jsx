@@ -19,14 +19,27 @@ export default function App(){
   const reserveCoupon=coupon=>setPreset({coupon})
   useEffect(()=>{
     let frame
+    let userNavigated=false
+    const navigation=performance.getEntriesByType('navigation')[0]
+    const isReload=navigation?.type==='reload'
+    const previousRestoration=history.scrollRestoration
+    if(isReload){
+      history.scrollRestoration='manual'
+      scrollTo(0,0)
+    }
     const scrollToHash=behavior=>{
       const id=decodeURIComponent(location.hash.slice(1))
       const target=id&&document.getElementById(id)
       if(target)target.scrollIntoView({behavior,block:'start'})
     }
-    const scheduleScroll=(behavior='auto')=>{
+    const schedule=action=>{
       cancelAnimationFrame(frame)
-      frame=requestAnimationFrame(()=>{frame=requestAnimationFrame(()=>scrollToHash(behavior))})
+      frame=requestAnimationFrame(()=>{frame=requestAnimationFrame(action)})
+    }
+    const scheduleScroll=(behavior='auto')=>schedule(()=>scrollToHash(behavior))
+    const scheduleInitial=()=>{
+      if(userNavigated)return
+      schedule(()=>isReload?scrollTo(0,0):scrollToHash('auto'))
     }
     const handleClick=e=>{
       const anchor=e.target.closest('a[href^="#"]')
@@ -35,20 +48,22 @@ export default function App(){
       const id=hash&&decodeURIComponent(hash.slice(1))
       if(!id||!document.getElementById(id))return
       e.preventDefault()
+      userNavigated=true
       if(location.hash!==hash)history.pushState(null,'',hash)
       scheduleScroll('smooth')
     }
     const opening=document.querySelector('.opening')
-    const handleHashChange=()=>scheduleScroll()
-    const handleLoad=()=>scheduleScroll()
-    const handleOpeningEnd=e=>{if(e.animationName==='opening-hide')scheduleScroll()}
+    const handleHashChange=()=>{userNavigated=true;scheduleScroll()}
+    const handleLoad=()=>scheduleInitial()
+    const handleOpeningEnd=e=>{if(e.animationName==='opening-hide')scheduleInitial()}
     document.addEventListener('click',handleClick)
     addEventListener('hashchange',handleHashChange)
     addEventListener('load',handleLoad)
     opening?.addEventListener('animationend',handleOpeningEnd)
-    scheduleScroll()
+    scheduleInitial()
     return()=>{
       cancelAnimationFrame(frame)
+      history.scrollRestoration=previousRestoration
       document.removeEventListener('click',handleClick)
       removeEventListener('hashchange',handleHashChange)
       removeEventListener('load',handleLoad)
