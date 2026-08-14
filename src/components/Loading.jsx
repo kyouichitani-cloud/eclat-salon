@@ -7,7 +7,8 @@ export default function Loading({ onComplete }) {
       return undefined
     }
 
-    const fallback = window.setTimeout(onComplete, 3200)
+    const mobile = window.matchMedia('(max-width: 767px)').matches
+    const fallback = window.setTimeout(onComplete, mobile ? 2400 : 3200)
     return () => window.clearTimeout(fallback)
   }, [onComplete])
 
