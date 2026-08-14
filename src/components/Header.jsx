@@ -13,7 +13,10 @@ export default function Header() {
     document.body.style.overflow='hidden'
     document.documentElement.style.overflow='hidden'
     document.body.style.overscrollBehavior='none'
+    const closeOnEscape=e=>{if(e.key==='Escape')setOpen(false)}
+    addEventListener('keydown',closeOnEscape)
     return()=>{
+      removeEventListener('keydown',closeOnEscape)
       document.body.style.overflow=bodyOverflow
       document.documentElement.style.overflow=htmlOverflow
       document.body.style.overscrollBehavior=bodyOverscroll
