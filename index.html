@@ -17,17 +17,16 @@
   <link rel="preload" as="image" href="images/mobile/hero.jpg" media="(max-width:767px)" fetchpriority="high"/>
   <link rel="preload" as="image" href="images/hero.jpg" media="(min-width:768px)" fetchpriority="high"/>
   <style>
-    @font-face{font-family:'Cormorant Garamond Fallback';src:local('Georgia');ascent-override:92.4%;descent-override:28.7%;line-gap-override:0%;size-adjust:80.18%}
-    .opening{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#080808;color:#fff;animation:opening-hide .1s 2.77s both}
-    .opening__panel{position:absolute;left:0;width:100%;height:50%;background:#080808;animation-duration:.8s;animation-delay:1.97s;animation-fill-mode:both;animation-timing-function:cubic-bezier(.77,0,.18,1)}
-    .opening__panel--top{top:0;animation-name:opening-top}.opening__panel--bottom{bottom:0;animation-name:opening-bottom}
-    .opening__content{position:relative;z-index:2;text-align:center;animation:opening-content-out .2s 2.57s both}
+    .opening{position:fixed;inset:0;z-index:9999;width:100vw;height:100dvh;overflow:clip;contain:strict;isolation:isolate;background:#080808;color:#fff;pointer-events:none;animation:opening-hide .1s 2.77s both}
+    .opening__panel{position:fixed;right:0;left:0;background:#080808;will-change:transform;backface-visibility:hidden;animation-duration:.8s;animation-delay:1.97s;animation-fill-mode:both;animation-timing-function:cubic-bezier(.77,0,.18,1)}
+    .opening__panel--top{top:0;bottom:50%;animation-name:opening-top}.opening__panel--bottom{top:50%;bottom:0;animation-name:opening-bottom}
+    .opening__content{position:fixed;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;will-change:opacity;animation:opening-content-out .2s 2.57s both}
     .opening__eyebrow{font:300 9px/1.9 -apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;letter-spacing:.42em;animation:opening-fade-up .35s both}
-    .opening__letter{display:flex;overflow:hidden;font:300 clamp(76px,12vw,170px)/1 'Cormorant Garamond','Cormorant Garamond Fallback','Yu Mincho',serif;letter-spacing:.12em}
+    .opening__letter{display:flex;overflow:hidden;font:300 clamp(76px,12vw,170px)/1 Georgia,'Times New Roman','Yu Mincho',serif;letter-spacing:.12em}
     .opening__letter span{display:block;transform:translateY(110%);animation:opening-letter .65s calc(.25s + var(--letter) * .08s) cubic-bezier(.22,1,.36,1) forwards}
     .opening__line{width:min(420px,70vw);height:1px;margin:19px auto 22px;background:#b89b67;transform:scaleX(0);animation:opening-line .55s .97s cubic-bezier(.45,0,.55,1) forwards}
-    .opening__tagline{font-family:'Cormorant Garamond','Cormorant Garamond Fallback','Yu Mincho',serif;letter-spacing:.14em;animation:opening-fade-up .45s 1.37s both}
-    @keyframes opening-fade-up{from{opacity:0;transform:translateY(12px)}}@keyframes opening-letter{to{transform:translateY(0)}}@keyframes opening-line{to{transform:scaleX(1)}}@keyframes opening-top{to{transform:translateY(-100%)}}@keyframes opening-bottom{to{transform:translateY(100%)}}@keyframes opening-content-out{to{opacity:0}}@keyframes opening-hide{to{visibility:hidden;opacity:0}}
+    .opening__tagline{font-family:Georgia,'Times New Roman','Yu Mincho',serif;letter-spacing:.14em;animation:opening-fade-up .45s 1.37s both}
+    @keyframes opening-fade-up{from{opacity:0;transform:translate3d(0,12px,0)}to{opacity:1;transform:translate3d(0,0,0)}}@keyframes opening-letter{from{transform:translate3d(0,110%,0)}to{transform:translate3d(0,0,0)}}@keyframes opening-line{from{transform:scaleX(0)}to{transform:scaleX(1)}}@keyframes opening-top{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,-100%,0)}}@keyframes opening-bottom{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,100%,0)}}@keyframes opening-content-out{from{opacity:1}to{opacity:0}}@keyframes opening-hide{from{visibility:visible;opacity:1}to{visibility:hidden;opacity:0}}
     @media(max-width:767px){.opening{animation-duration:.08s;animation-delay:2.08s}.opening__panel{animation-duration:.6s;animation-delay:1.48s}.opening__content{animation-duration:.15s;animation-delay:1.93s}.opening__eyebrow{animation-duration:.25s}.opening__letter span{animation-duration:.48s;animation-delay:calc(.16s + var(--letter) * .055s)}.opening__line{animation-duration:.4s;animation-delay:.7s}.opening__tagline{animation-duration:.34s;animation-delay:1s}}
     @media(prefers-reduced-motion:reduce){.opening{display:none}}
   </style>
