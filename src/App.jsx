@@ -19,5 +19,5 @@ export default function App(){
   const openingDone=useCallback(()=>setLoading(false),[])
   const reserveStylist=id=>setPreset({stylist:id})
   const reserveCoupon=coupon=>setPreset({coupon})
-  return <div>{loading&&<Loading onComplete={openingDone}/>}<Header/><main><Hero/><Concept/><div className="giant-type giant-type--one" aria-hidden="true">ÉCLAT</div><StyleGallery/><FullscreenMoment/><div className="giant-type giant-type--two" aria-hidden="true">BEAUTY</div><Stylist onReserve={reserveStylist}/><Menu/><Coupon onReserve={reserveCoupon}/><SalonGallery/><Reservation preset={preset} onConsumed={()=>setPreset(null)}/><FAQ/></main><Footer/><a className="mobile-book" href="#reservation">WEB RESERVATION</a></div>
+  return <div>{loading&&<Loading onComplete={openingDone}/>}<Header/><main><Hero/><Concept/><div className="giant-type giant-type--one" aria-hidden="true">ÉCLAT</div><StyleGallery/><FullscreenMoment/><div className="giant-type giant-type--two" aria-hidden="true">BEAUTY</div><Stylist onReserve={reserveStylist}/><Menu/><Coupon onReserve={reserveCoupon}/><SalonGallery/><Reservation preset={preset} onConsumed={()=>setPreset(null)}/><FAQ/></main><Footer/><a className="mobile-book" href="#reservation" aria-label="予約セクションへ">WEB RESERVATION</a></div>
 }
